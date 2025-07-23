@@ -1,50 +1,73 @@
-<?php 
-$db = mysqli_connect('localhost','root','','admin');
-if (isset($_POST['submit'])){ 
-    $n = $_POST['sname'];
-     $a = $_POST['sage'];
-     $e = $_POST['semail'];
-     $c = $_POST['scontact'];
-     $db->query("call call_users('$n','$a','$e','$c')");
-    
+<?php
+$db = mysqli_connect('localhost', 'root', '', 'admin');
 
-    //  $sql = "INSERT INTO users(name,age,email,contact) VALUES ('$n','$a','$e','$c')";
-    //  if(mysqli_query($db, $sql) == TRUE){ 
-    //     echo "DATA INSERTED";
-    //     header('location:view.php');
-    //  }else{ 
-    //     echo "not inserted";
-    //  }
+if (isset($_POST['submit'])) {
+  $n = trim($_POST['sname']);
+  $a = intval($_POST['sage']);
+  $e = trim($_POST['semail']);
+  $c = trim($_POST['scontact']);
+
+  // Call Stored Procedure
+  $db->query("CALL call_users('$n','$a','$e','$c')");
+
+  // Redirect after insert
+  header('Location: view.php');
+  exit;
 }
-
-
 ?>
 
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <title>Insert User (Procedure)</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body>
-   <div class="container"> 
-    <div class="row"> 
-        <div class="col-sm-3"></div>
-        <a href="view.php">View Result</a>
-        <div class="col-sm-6 pt-4 mt-4 border border-success"> 
-        <form action="insert.php" method="POST"> 
-        Name:<br>
-        <input type ="text" name ="sname"><br><br>
-        Age:<br>
-        <input type ="text" name ="sage"><br><br>
-        Email:<br>
-        <input type ="text" name ="semail"><br><br>
-        Contact:<br>
-        <input type ="text" name ="scontact"><br><br>
-        <input type ="submit" name ="submit" value="insert" class="btn btn-success">
-        </form>
-        </div>
-        <div class="col-sm-3"></div>
+  <div class="container py-5">
+    <div class="d-flex justify-content-between mb-4">
+      <h2 class="text-success">📌 Add User (Procedure)</h2>
+      <a href="view.php" class="btn btn-secondary">
+        <i class="bi bi-table"></i> View Users
+      </a>
     </div>
-   </div>
+
+    <div class="card shadow">
+      <div class="card-header bg-success text-white">
+        <h4>Insert New User with Stored Procedure</h4>
+      </div>
+      <div class="card-body">
+        <form method="POST">
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" name="sname" class="form-control" placeholder="Enter name" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Age</label>
+            <input type="number" name="sage" class="form-control" placeholder="Enter age" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" name="semail" class="form-control" placeholder="Enter email" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Contact</label>
+            <input type="text" name="scontact" class="form-control" placeholder="Enter contact number" required>
+          </div>
+
+          <button type="submit" name="submit" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Insert
+          </button>
+          <a href="view.php" class="btn btn-secondary">
+            Back
+          </a>
+        </form>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
