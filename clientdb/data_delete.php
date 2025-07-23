@@ -3,7 +3,7 @@ require_once 'conn.php';
 if (isset($_GET['deleteid'])){ 
     $delete_id = $_GET['deleteid'];
      $sql = "DELETE FROM  users WHERE id = $delete_id";
-     if(mysqli_query($db, $sql) == TRUE){ 
+     if(mysqli_query($, $sql) == TRUE){ 
         header('location:view.php');
      }
 }
@@ -27,7 +27,7 @@ if (isset($_GET['deleteid'])){
 	
 	</tr>
 	<?php 
-		$users = $db->query("select * from users");
+		$users = $pdo->query("select * from users");
 		while(list($_id,$_name,$_email,$_phone) = $users->fetch_row()){
 			echo "<tr> 
 					<td>$_id</td>
