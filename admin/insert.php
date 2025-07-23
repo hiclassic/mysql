@@ -1,49 +1,53 @@
-<?php 
-$db = mysqli_connect('localhost','root','','admin');
-if (isset($_POST['submit'])){ 
-    $n = $_POST['sname'];
-     $a = $_POST['sage'];
-     $e = $_POST['semail'];
-     $c = $_POST['scontact'];
-    
-
-     $sql = "INSERT INTO users(name,age,email,contact) VALUES ('$n','$a','$e','$c')";
-     if(mysqli_query($db, $sql) == TRUE){ 
-        echo "DATA INSERTED";
-        header('location:view.php');
-     }else{ 
-        echo "not inserted";
-     }
+<?php
+$db = mysqli_connect('localhost', 'root', '', 'admin');
+if (isset($_POST['submit'])) {
+  $n = trim($_POST['sname']);
+  $a = intval($_POST['sage']);
+  $e = trim($_POST['semail']);
+  $c = trim($_POST['scontact']);
+  $db->query("INSERT INTO users(name, age, email, contact) VALUES ('$n','$a','$e','$c')");
+  header('location:view.php');
 }
-
-
 ?>
 
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <title>Add User</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-   <div class="container"> 
-    <div class="row"> 
-        <div class="col-sm-3"></div>
-        <a href="view.php">View Result</a>
-        <div class="col-sm-6 pt-4 mt-4 border border-success"> 
-        <form action="insert.php" method="POST"> 
-        Name:<br>
-        <input type ="text" name ="sname"><br><br>
-        Age:<br>
-        <input type ="text" name ="sage"><br><br>
-        Email:<br>
-        <input type ="text" name ="semail"><br><br>
-        Contact:<br>
-        <input type ="text" name ="scontact"><br><br>
-        <input type ="submit" name ="submit" value="insert" class="btn btn-success">
+  <div class="container py-5">
+    <div class="card shadow">
+      <div class="card-header bg-success text-white">
+        <h4>Add New User</h4>
+      </div>
+      <div class="card-body">
+        <form method="POST">
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" name="sname" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Age</label>
+            <input type="number" name="sage" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" name="semail" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Contact</label>
+            <input type="text" name="scontact" class="form-control" required>
+          </div>
+          <button type="submit" name="submit" class="btn btn-success">
+            <i class="bi bi-check-circle"></i> Save
+          </button>
+          <a href="view.php" class="btn btn-secondary">Back</a>
         </form>
-        </div>
-        <div class="col-sm-3"></div>
+      </div>
     </div>
-   </div>
+  </div>
 </body>
 </html>
