@@ -1,48 +1,64 @@
-<!-- <h1>
-	<pre>
-mysql_fetch_array() - Fetch a result row as an associative array, a numeric array, or both
-mysql_fetch_assoc() - Fetch a result row as an associative array
-mysql_fetch_object() - Fetch a result row as an object
-mysql_data_seek() - Move internal result pointer
-mysql_fetch_lengths() - Get the length of each output in a result
-mysql_result() - Get result data
-	</pre>
-</h1> -->
-
-
-
-
 <?php
 $db = mysqli_connect('localhost', 'root', '', 'admin');
 ?>
-<div>
-			<h3>User Information</h3>
-			<p>
-     			<a href="insert.php">Add New Data</a>
-    		</p>
-			<table border="1" style="border-collapse: collapse;">
-				<tr>
-					<th>ID</th>
-					<th>Name</th>
-					<th>Age</th>
-					<th>Email</th>
-					<th>Contact</th>
-				</tr>
-				<?php
-				$users = $db->query("select * from users");
-				while(list($_id,$_name,$_age,$_email,$contact) = $users->fetch_row()){
-					echo "<tr> 
-							<td>$_id</td>
-							<td>$_name</td>
-							<td>$_age</td>
-							<td>$_email</td>
-							<td>$contact</td>
-							
-						</tr>";
-				}
-				?>
-			</table>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>User Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body { background: #f8f9fa; }
+    .table-hover tbody tr:hover { background: #e9ecef; transition: 0.3s; }
+    .action-btn { margin-right: 5px; }
+    .fade-in { animation: fadeIn 0.5s ease-in; }
+    @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+  </style>
+</head>
+<body>
+  <div class="container py-5 fade-in">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="text-success">📋 User Information</h2>
+      <a href="insert.php" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Add New User
+      </a>
+    </div>
 
-
-
-</div>
+    <table class="table table-bordered table-hover shadow-sm">
+      <thead class="table-success">
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Email</th>
+          <th>Contact</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      <?php
+      $users = $db->query("SELECT * FROM users");
+      while($row = $users->fetch_assoc()):
+      ?>
+        <tr>
+          <td><?= htmlspecialchars($row['id']) ?></td>
+          <td><?= htmlspecialchars($row['name']) ?></td>
+          <td><?= htmlspecialchars($row['age']) ?></td>
+          <td><?= htmlspecialchars($row['email']) ?></td>
+          <td><?= htmlspecialchars($row['contact']) ?></td>
+          <td>
+            <a href="edit.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-primary action-btn">
+              <i class="bi bi-pencil-square"></i>
+            </a>
+            <a href="delete.php?deleteid=<?= $row['id'] ?>" class="btn btn-sm btn-danger action-btn" onclick="return confirm('Are you sure?')">
+              <i class="bi bi-trash3-fill"></i>
+            </a>
+          </td>
+        </tr>
+      <?php endwhile; ?>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
