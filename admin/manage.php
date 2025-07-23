@@ -1,23 +1,13 @@
-<?php
-require_once 'conn.php';
-
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-
-    $sql = "DELETE FROM clients WHERE id = :id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':id', $id);
-
-    if ($stmt->execute()) {
-        echo "✅ Data Deleted Successfully.";
-        header("Location: clientsdb_data_view.php");
-        exit;
-    } else {
-        echo "❌ Error: " . $stmt->errorInfo()[2];
-    }
+<?php 
+$db = mysqli_connect('localhost','root','','admin');
+if (isset($_GET['deleteid'])){ 
+    $delete_id = $_GET['deleteid'];
+     $sql = "DELETE FROM  users WHERE id = $delete_id";
+     if(mysqli_query($db, $sql) == TRUE){ 
+        header('location:delete.php');
+     }
 }
 ?>
-
   <div class="container"> 
     <div class="row"> 
     <p>
@@ -29,9 +19,12 @@ if (isset($_GET['id'])) {
             <h3 class="text-center p-2 m-2 bg-success text-white">User Information</h3>
 <table border="1" style="border-collapse: collapse;" > 
 	<tr>
+		<th>ID</th>
 		<th>Name</th>
-		<th>Email</th>
-		<th>Phone</th>
+		<th>Age</th>
+		<th>email</th>
+		<th>contact</th>
+		<th>Action</th>
 	
 	</tr>
 	<?php 
@@ -46,7 +39,9 @@ if (isset($_GET['id'])) {
 						<td> 
 							<a href='delete.php?deleteid=$_id'>
 								Delete
-							</a>
+							</a>||
+							<a href='edit.php?id=$_id'> 
+							<span>Edit</span> </a>
 						</td>
 				</tr>";
 		}
